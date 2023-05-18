@@ -1,0 +1,29 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/js/app.js"></script>
+<link rel="stylesheet" href="/css/app.css">
+<div class="mx-auto text-bold text-lg">
+  <div class="text-center text-secondary font-bold p-5 text-3xl">FlySafe Dashboard ✈️</div>
+    <div class="my-20 mx-40 font-bold text-secondary text-center">
+      <button phx-click="landing_started" class="bg-primary_extra_dark p-8 rounded-lg font-bold text-2xl hover:scale-105 transition-all">
+        Start Landing!
+      </button>
+    </div>
+</div>
+
+  <div class="flex flex-row text-secondary text-xl font-bold space-x-10 justify-center mx-10">
+    <div class="rounded overflow-hidden shadow-lg bg-primary_light transition-all w-full">
+      <div class="object-top-left p-4 text-primary_dark font-sans">Current Altitude</div>
+      <div class="p-5 text-7xl text-secondary font-bold"><%= @altitude %><span class="text-2xl"> ft</span></div>
+    </div>
+
+    <div class="rounded overflow-hidden shadow-lg bg-primary_light transition-all w-full">
+      <div class="object-top-left p-4 text-primary_dark font-sans">Current Descent Speed</div>
+      <div class="p-5 text-7xl text-secondary font-bold"><%= @altitude %> <span class="text-2xl"> ft/s</span></div>
+    </div>
+  </div>
+
+  <div class="bg-primary_dark p-20 my-20 mx-20 rounded-xl">
+    <div class="text-center text-secondary font-bold p-5 text-3xl">Arduino Logs 🖥️</div>
+    <div class="text-left text-secondary font-bold p-5 m-auto">
+      log
+    </div>
