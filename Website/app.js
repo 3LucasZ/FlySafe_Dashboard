@@ -3,14 +3,16 @@ const speakerDiv = document.getElementById("speakerDiv");
 var distDiv = document.getElementById("distDiv");
 var statusDiv = document.getElementById("statusDiv");
 
-new Chart(canvasDiv, {
+var dists = [0];
+var cnts = [0];
+var chart = new Chart(canvasDiv, {
   type: "line",
   data: {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: cnts,
     datasets: [
       {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
+        label: "Relative Altitude (m)",
+        data: dists,
         borderWidth: 1,
       },
     ],
@@ -24,6 +26,41 @@ new Chart(canvasDiv, {
   },
 });
 
+function upd(newDist) {
+  dists.push(newDist);
+  cnts.push(cnts[cnts.length - 1] + 1);
+  if (cnts.length > 10) {
+    dists.shift();
+    cnts.shift();
+  }
+  reGraph();
+}
+function reGraph() {
+  chart.destroy();
+  chart = new Chart(canvasDiv, {
+    type: "line",
+    data: {
+      labels: cnts,
+      datasets: [
+        {
+          label: "Relative Altitude (m)",
+          data: dists,
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      animation: {
+        duration: 0,
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+}
 //set up
 //set this to the service uuid of your device
 const serviceUuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
@@ -54,9 +91,9 @@ function gotCharacteristics(error, characteristics) {
     if (isConnected) {
       if (error) console.log("error: ", error);
       console.log("characteristics: ", characteristics);
-      distChar = characteristics[2];
-      volChar = characteristics[0];
-      speakerChar = characteristics[1];
+      distChar = characteristics[2]; //2
+      volChar = characteristics[0]; //0
+      speakerChar = characteristics[1]; //1
       //start listening for notifications.
       //The callback handleNotifications will be called when a notification is received.
       ble.read(distChar, gotDist);
@@ -69,6 +106,7 @@ function gotDist(error, value) {
   if (error) console.log("error: ", error);
   console.log("dist: ", value);
   distDiv.innerHTML = value;
+  upd(value);
   // After getting a value, call p5ble.read() again to get the value again
   setTimeout(() => {
     ble.read(distChar, gotDist);
@@ -79,5 +117,10 @@ function gotDist(error, value) {
 function writeSpeaker() {
   const speaker = speakerDiv.value;
   console.log("Write Speaker: ", speaker);
+  // let utf8Encode = new TextEncoder();
+  // speakerBit = utf8Encode.encode(speaker);
+  // console.log("Write Speaker Bit: ", speakerBit);
+  // const value = Uint8Array.of(887868564786748);
+  // console.log(value);
   ble.write(speakerChar, speaker);
 }
