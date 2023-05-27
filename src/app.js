@@ -94,7 +94,7 @@ function gotCharacteristics(error, characteristics) {
       if (error) console.log("error: ", error);
       uuids = [];
       for (let i = 0; i < characteristics.length; i++) {
-        uuids[i] = characteristics[i].uuid;
+        uuids[i] = characteristics[i].uuid.toLowerCase();
       }
       distChar = characteristics[uuids.indexOf(CHAR_DIST_UUID)];
       volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
