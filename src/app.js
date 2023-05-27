@@ -66,9 +66,9 @@ function reGraph() {
 //set up
 //set this to the service uuid of your device
 const serviceUuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
-// const CHAR_DIST_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
-// const CHAR_VOL_UUID = "66d04e60-89ba-4ab2-a0b3-2257bc8d43f7";
-// const CHAR_SPEAKER_UUID = "90788378-fca7-48da-9b30-a0bbfeacdb7b";
+const CHAR_DIST_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
+const CHAR_VOL_UUID = "66d04e60-89ba-4ab2-a0b3-2257bc8d43f7";
+const CHAR_SPEAKER_UUID = "90788378-fca7-48da-9b30-a0bbfeacdb7b";
 let distChar;
 let volChar;
 let speakerChar;
@@ -92,13 +92,16 @@ function gotCharacteristics(error, characteristics) {
     statusDiv.innerHTML = "Connected: " + isConnected;
     if (isConnected) {
       if (error) console.log("error: ", error);
-      console.log("characteristics: ", characteristics);
-      distChar = characteristics[2]; //2
-      volChar = characteristics[0]; //0
-      speakerChar = characteristics[1]; //1
-      dbg1Div.innerHTML += characteristics[0].uuid + "            ";
-      dbg2Div.innerHTML += characteristics[1].uuid + "           ";
-      dbg3Div.innerHTML += characteristics[2].uuid + "           ";
+      uuids = [];
+      for (let i = 0; i < characteristics.length; i++) {
+        uuids[i] = characteristics[i].uuid;
+      }
+      distChar = characteristics[uuids.indexOf(CHAR_DIST_UUID)];
+      volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
+      speakerChar = characteristics[uuids.indexOf(CHAR_SPEAKER_UUID)];
+      dbg1Div.innerHTML = characteristics[0].uuid;
+      dbg2Div.innerHTML = characteristics[1].uuid;
+      dbg3Div.innerHTML = characteristics[2].uuid;
       //start listening for notifications.
       //The callback handleNotifications will be called when a notification is received.
       ble.read(distChar, gotDist);
