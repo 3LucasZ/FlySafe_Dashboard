@@ -103,12 +103,10 @@ function gotCharacteristics(error, characteristics) {
 function gotDist(error, value) {
   if (!isConnected) return;
   if (error) console.log("error: ", error);
-  a = value / 10;
-  b = value % 10;
-  meters = a + "." + b;
-  console.log("dist: ", meters);
+  value /= 10;
+  console.log("dist: ", value);
   distDiv.innerHTML = value;
-  updateGraphDisplay(meters);
+  updateGraphDisplay(value);
   // After getting a value, call p5ble.read() again to get the value again
   setTimeout(() => {
     ble.read(distChar, gotDist);
