@@ -2,6 +2,9 @@ const canvasDiv = document.getElementById("canvasDiv");
 const speakerDiv = document.getElementById("speakerDiv");
 var distDiv = document.getElementById("distDiv");
 var statusDiv = document.getElementById("statusDiv");
+var dbgDiv = document.getElementById("dbg1Div");
+var dbgDiv = document.getElementById("dbg2Div");
+var dbgDiv = document.getElementById("dbg3Div");
 var dists = [0];
 var cnts = [0];
 var chart = new Chart(canvasDiv, {
@@ -93,6 +96,9 @@ function gotCharacteristics(error, characteristics) {
       distChar = characteristics[2]; //2
       volChar = characteristics[0]; //0
       speakerChar = characteristics[1]; //1
+      dbg1Div.innerHTML += characteristics[0].uuid + "            ";
+      dbg2Div.innerHTML += characteristics[1].uuid + "           ";
+      dbg3Div.innerHTML += characteristics[2].uuid + "           ";
       //start listening for notifications.
       //The callback handleNotifications will be called when a notification is received.
       ble.read(distChar, gotDist);
