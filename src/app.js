@@ -99,9 +99,12 @@ function gotCharacteristics(error, characteristics) {
       distChar = characteristics[uuids.indexOf(CHAR_DIST_UUID)];
       volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
       speakerChar = characteristics[uuids.indexOf(CHAR_SPEAKER_UUID)];
-      dbg1Div.innerHTML = characteristics[0].uuid;
-      dbg2Div.innerHTML = characteristics[1].uuid;
-      dbg3Div.innerHTML = characteristics[2].uuid;
+      dbg1Div.innerHTML =
+        "0: " + characteristics[0].uuid + " dist: " + distChar.uuid;
+      dbg2Div.innerHTML =
+        "1: " + characteristics[1].uuid + " vol: " + volChar.uuid;
+      dbg3Div.innerHTML =
+        "2: " + characteristics[2].uuid + " speaker: " + speakerChar.uuid;
       //start listening for notifications.
       //The callback handleNotifications will be called when a notification is received.
       ble.read(distChar, gotDist);
