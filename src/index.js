@@ -135,6 +135,7 @@ function volDown() {
 
 if ("speechSynthesis" in window) {
   // Speech Synthesis supported 🎉
+  console.log(speechSynthesis.getVoices());
 } else {
   // Speech Synthesis Not Supported 😣
   alert("Sorry, your browser doesn't support text to speech!");
@@ -144,4 +145,5 @@ function speak() {
   var msg = new SpeechSynthesisUtterance();
   msg.text = "hi";
   window.speechSynthesis.speak(msg);
+  console.log(speechSynthesis.getVoices());
 }
