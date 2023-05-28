@@ -1,11 +1,7 @@
 const canvasDiv = document.getElementById("canvasDiv");
-const speakerDiv = document.getElementById("speakerDiv");
 var distDiv = document.getElementById("distDiv");
 var statusDiv = document.getElementById("statusDiv");
 var volDiv = document.getElementById("volDiv");
-var dbg1Div = document.getElementById("dbg1Div");
-var dbg2Div = document.getElementById("dbg2Div");
-var dbg3Div = document.getElementById("dbg3Div");
 var dists = [0];
 var cnts = [0];
 var chart = new Chart(canvasDiv, {
@@ -86,28 +82,18 @@ function disconnectBLE() {
 
 // A function that will be called once characteristics are received
 function gotCharacteristics(error, characteristics) {
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
   if (ble.isConnected()) {
-  } else {
-    statusDiv.innerHTML = "Connected: " + ble.isConnected();
-    if (ble.isConnected()) {
-      if (error) console.log("error: ", error);
-      uuids = [];
-      for (let i = 0; i < characteristics.length; i++) {
-        uuids[i] = characteristics[i].uuid.toLowerCase();
-      }
-      distChar = characteristics[uuids.indexOf(CHAR_DIST_UUID)];
-      volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
-      speakerChar = characteristics[uuids.indexOf(CHAR_SPEAKER_UUID)];
-      dbg1Div.innerHTML =
-        "0: " + characteristics[0].uuid + " dist: " + distChar.uuid;
-      dbg2Div.innerHTML =
-        "1: " + characteristics[1].uuid + " vol: " + volChar.uuid;
-      dbg3Div.innerHTML =
-        "2: " + characteristics[2].uuid + " speaker: " + speakerChar.uuid;
-      //start listening for notifications.
-      //The callback handleNotifications will be called when a notification is received.
-      ble.read(distChar, gotDist);
+    if (error) console.log("error: ", error);
+    uuids = [];
+    for (let i = 0; i < characteristics.length; i++) {
+      uuids[i] = characteristics[i].uuid.toLowerCase();
     }
+    distChar = characteristics[uuids.indexOf(CHAR_DIST_UUID)];
+    volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
+    speakerChar = characteristics[uuids.indexOf(CHAR_SPEAKER_UUID)];
+
+    ble.read(distChar, gotDist);
   }
 }
 
@@ -133,13 +119,9 @@ function gotVol(error, value) {
     ble.read(distChar, gotDist);
   }, 100);
 }
+function writeVol() {}
 
-//writers
-function writeSpeaker() {
-  const speaker = speakerDiv.value;
-  console.log("Write speaker: ", speaker);
-  ble.write(speakerChar, speaker);
-}
+//state changers
 function volUp() {
   const vol = volDiv.innerHTML + 5;
   console.log("Write vol: ", vol);
@@ -150,3 +132,20 @@ function volDown() {
   console.log("Write vol: ", vol);
   ble.write(volChar, vol);
 }
+
+if ("speechSynthesis" in window) {
+  // Speech Synthesis supported 🎉
+} else {
+  // Speech Synthesis Not Supported 😣
+  alert("Sorry, your browser doesn't support text to speech!");
+}
+
+function annoy() {
+  var msg = new SpeechSynthesisUtterance();
+  msg.text = " hi ";
+  window.speechSynthesis.speak(msg);
+  setTimeout(() => {
+    annoy();
+  }, 1000);
+}
+annoy();

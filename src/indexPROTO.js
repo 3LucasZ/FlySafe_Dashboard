@@ -86,28 +86,25 @@ function disconnectBLE() {
 
 // A function that will be called once characteristics are received
 function gotCharacteristics(error, characteristics) {
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
   if (ble.isConnected()) {
-  } else {
-    statusDiv.innerHTML = "Connected: " + ble.isConnected();
-    if (ble.isConnected()) {
-      if (error) console.log("error: ", error);
-      uuids = [];
-      for (let i = 0; i < characteristics.length; i++) {
-        uuids[i] = characteristics[i].uuid.toLowerCase();
-      }
-      distChar = characteristics[uuids.indexOf(CHAR_DIST_UUID)];
-      volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
-      speakerChar = characteristics[uuids.indexOf(CHAR_SPEAKER_UUID)];
-      dbg1Div.innerHTML =
-        "0: " + characteristics[0].uuid + " dist: " + distChar.uuid;
-      dbg2Div.innerHTML =
-        "1: " + characteristics[1].uuid + " vol: " + volChar.uuid;
-      dbg3Div.innerHTML =
-        "2: " + characteristics[2].uuid + " speaker: " + speakerChar.uuid;
-      //start listening for notifications.
-      //The callback handleNotifications will be called when a notification is received.
-      ble.read(distChar, gotDist);
+    if (error) console.log("error: ", error);
+    uuids = [];
+    for (let i = 0; i < characteristics.length; i++) {
+      uuids[i] = characteristics[i].uuid.toLowerCase();
     }
+    distChar = characteristics[uuids.indexOf(CHAR_DIST_UUID)];
+    volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
+    speakerChar = characteristics[uuids.indexOf(CHAR_SPEAKER_UUID)];
+    dbg1Div.innerHTML =
+      "0: " + characteristics[0].uuid + " dist: " + distChar.uuid;
+    dbg2Div.innerHTML =
+      "1: " + characteristics[1].uuid + " vol: " + volChar.uuid;
+    dbg3Div.innerHTML =
+      "2: " + characteristics[2].uuid + " speaker: " + speakerChar.uuid;
+    //start listening for notifications.
+    //The callback handleNotifications will be called when a notification is received.
+    ble.read(distChar, gotDist);
   }
 }
 
@@ -121,7 +118,7 @@ function gotDist(error, value) {
   updateGraphDisplay(value);
   setTimeout(() => {
     ble.read(volChar, gotVol);
-  }, 100);
+  }, 1000);
 }
 function gotVol(error, value) {
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
@@ -131,7 +128,7 @@ function gotVol(error, value) {
   volDiv.innerHTML = value;
   setTimeout(() => {
     ble.read(distChar, gotDist);
-  }, 100);
+  }, 1000);
 }
 
 //writers

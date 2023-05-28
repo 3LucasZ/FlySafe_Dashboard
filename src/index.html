@@ -38,43 +38,23 @@
       </div>
 
       <div class="rounded shadow-lg bg-blue p-5">
-        <div class="object-top-left font-sans">Speaker:</div>
-        <form class="flex flex-row md-2">
-          <!--<label
-              for="speakerName"
-              class="text-xl font-sans"
-              >Name</label
-            >-->
-
-          <input
-            type="speakerName"
-            id="speakerDiv"
-            class="rounded-lg p-2 mr-2 basis-3/4"
-            placeholder="e.g. Bose AE2 SoundLink"
-            required
-          />
-          <input
-            type="button"
-            value="Connect"
-            onclick="writeSpeaker()"
-            class="bg-yellow p-4 rounded-lg font-bold text-2xl hover:scale-105 transition-all basis-1/4"
-          />
-        </form>
+        <div class="object-top-left font-sans">Configure:</div>
         <div class="flex mt-2">
-          <button
-            onclick="volUp()"
-            class="bg-green p-4 rounded-lg hover:scale-105 transition-all"
-          >
-            +
-          </button>
-          <div id="volDiv" class="bg-yellow p-4 rounded-lg text-center mx-2">
-            DNE
-          </div>
           <button
             onclick="volDown()"
             class="bg-red p-4 rounded-lg hover:scale-105 transition-all"
           >
             -
+          </button>
+          <div id="volDiv" class="bg-yellow p-4 rounded-lg text-center mx-2">
+            Volume:
+            <span>DNE</span>
+          </div>
+          <button
+            onclick="volUp()"
+            class="bg-green p-4 rounded-lg hover:scale-105 transition-all"
+          >
+            +
           </button>
         </div>
       </div>
@@ -88,13 +68,6 @@
       <div class="rounded shadow-lg">
         <canvas id="canvasDiv"></canvas>
       </div>
-    </div>
-
-    <div>
-      <div>Debug Logs</div>
-      <div id="dbg1Div"></div>
-      <div id="dbg2Div"></div>
-      <div id="dbg3Div"></div>
     </div>
     <script src="index.js"></script>
   </body>
