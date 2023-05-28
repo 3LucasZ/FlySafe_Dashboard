@@ -2,9 +2,10 @@ const canvasDiv = document.getElementById("canvasDiv");
 const speakerDiv = document.getElementById("speakerDiv");
 var distDiv = document.getElementById("distDiv");
 var statusDiv = document.getElementById("statusDiv");
-var dbgDiv = document.getElementById("dbg1Div");
-var dbgDiv = document.getElementById("dbg2Div");
-var dbgDiv = document.getElementById("dbg3Div");
+var volDiv = document.getElementById("volDiv");
+var dbg1Div = document.getElementById("dbg1Div");
+var dbg2Div = document.getElementById("dbg2Div");
+var dbg3Div = document.getElementById("dbg3Div");
 var dists = [0];
 var cnts = [0];
 var chart = new Chart(canvasDiv, {
@@ -73,24 +74,22 @@ let distChar;
 let volChar;
 let speakerChar;
 let ble = new p5ble();
-let isConnected = false;
 
 function connectBLE() {
   ble.connect(serviceUuid, gotCharacteristics);
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
 }
 function disconnectBLE() {
   ble.disconnect();
-  isConnected = ble.isConnected();
-  statusDiv.innerHTML = "Connected: " + isConnected;
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
 }
 
 // A function that will be called once characteristics are received
 function gotCharacteristics(error, characteristics) {
-  if (isConnected) {
+  if (ble.isConnected()) {
   } else {
-    isConnected = ble.isConnected();
-    statusDiv.innerHTML = "Connected: " + isConnected;
-    if (isConnected) {
+    statusDiv.innerHTML = "Connected: " + ble.isConnected();
+    if (ble.isConnected()) {
       if (error) console.log("error: ", error);
       uuids = [];
       for (let i = 0; i < characteristics.length; i++) {
@@ -113,30 +112,41 @@ function gotCharacteristics(error, characteristics) {
 }
 
 function gotDist(error, value) {
-  if (!isConnected) return;
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
+  if (!ble.isConnected()) return;
   if (error) console.log("error: ", error);
   value /= 10;
   console.log("dist: ", value);
   distDiv.innerHTML = value;
   updateGraphDisplay(value);
-  // After getting a value, call p5ble.read() again to get the value again
+  setTimeout(() => {
+    ble.read(volChar, gotVol);
+  }, 100);
+}
+function gotVol(error, value) {
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
+  if (!ble.isConnected()) return;
+  if (error) console.log("error: ", error);
+  console.log("vol: ", value);
+  volDiv.innerHTML = value;
   setTimeout(() => {
     ble.read(distChar, gotDist);
-  }, 1000);
+  }, 100);
 }
 
 //writers
 function writeSpeaker() {
   const speaker = speakerDiv.value;
-  console.log("Write Speaker: ", speaker);
-  // let utf8Encode = new TextEncoder();
-  // speakerBit = utf8Encode.encode(speaker);
-  // console.log("Write Speaker Bit: ", speakerBit);
-  // const value = Uint8Array.of(887868564786748);
-  // console.log(value);
+  console.log("Write speaker: ", speaker);
   ble.write(speakerChar, speaker);
 }
 function volUp() {
-  ble.write();
+  const vol = volDiv.innerHTML + 5;
+  console.log("Write vol: ", vol);
+  ble.write(volChar, vol);
 }
-function volDown() {}
+function volDown() {
+  const vol = volDiv.innerHTML - 5;
+  console.log("Write vol: ", vol);
+  ble.write(volChar, vol);
+}
