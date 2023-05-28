@@ -140,12 +140,8 @@ if ("speechSynthesis" in window) {
   alert("Sorry, your browser doesn't support text to speech!");
 }
 
-function annoy() {
+function speak() {
   var msg = new SpeechSynthesisUtterance();
-  msg.text = " hi ";
+  msg.text = "hi";
   window.speechSynthesis.speak(msg);
-  setTimeout(() => {
-    annoy();
-  }, 1000);
 }
-annoy();
