@@ -4,6 +4,7 @@ var statusDiv = document.getElementById("statusDiv");
 var volDiv = document.getElementById("volDiv");
 var dists = [0];
 var cnts = [0];
+var curVol;
 var chart = new Chart(canvasDiv, {
   type: "line",
   data: {
@@ -93,7 +94,7 @@ function gotCharacteristics(error, characteristics) {
     volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
     speakerChar = characteristics[uuids.indexOf(CHAR_SPEAKER_UUID)];
 
-    ble.read(distChar, gotDist);
+    ble.read(volChar, gotVol);
   }
 }
 
@@ -109,7 +110,7 @@ function gotDist(error, value) {
   msg.text = "" + value;
   window.speechSynthesis.speak(msg);
   setTimeout(() => {
-    ble.read(volChar, gotVol);
+    writeVol();
   }, 1000);
 }
 function gotVol(error, value) {
@@ -118,29 +119,36 @@ function gotVol(error, value) {
   if (error) console.log("error: ", error);
   console.log("vol: ", value);
   volDiv.innerHTML = value;
+  curVol = value;
   setTimeout(() => {
     ble.read(distChar, gotDist);
   }, 1000);
 }
-function writeVol() {}
+function writeVol() {
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
+  if (!ble.isConnected()) return;
+  ble.write(volChar, "" + curVol);
+  console.log("Write vol: ", curVol);
+  setTimeout(() => {
+    ble.read(distChar, gotDist);
+  }, 1000);
+}
 
 //state changers
 function volUp() {
-  const vol = volDiv.innerHTML + 5;
-  console.log("Write vol: ", vol);
-  ble.write(volChar, vol);
+  curVol += 5;
+  curVol = Math.min(curVol, 100);
+  volDiv.innerHTML = curVol;
 }
 function volDown() {
-  const vol = volDiv.innerHTML - 5;
-  console.log("Write vol: ", vol);
-  ble.write(volChar, vol);
+  curVol -= 5;
+  curVol = Math.max(curVol, 0);
+  volDiv.innerHTML = curVol;
 }
 
 if ("speechSynthesis" in window) {
-  // Speech Synthesis supported 🎉
   console.log(speechSynthesis.getVoices());
 } else {
-  // Speech Synthesis Not Supported 😣
   alert("Sorry, your browser doesn't support text to speech!");
 }
 
