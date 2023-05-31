@@ -127,7 +127,7 @@ function gotVol(error, value) {
 function writeVol() {
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
   if (!ble.isConnected()) return;
-  ble.write(volChar, "" + curVol);
+  ble.write(volChar, curVol);
   console.log("Write vol: ", curVol);
   setTimeout(() => {
     ble.read(distChar, gotDist);
@@ -136,11 +136,15 @@ function writeVol() {
 
 //state changers
 function volUp() {
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
+  if (!ble.isConnected()) return;
   curVol += 5;
   curVol = Math.min(curVol, 100);
   volDiv.innerHTML = curVol;
 }
 function volDown() {
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
+  if (!ble.isConnected()) return;
   curVol -= 5;
   curVol = Math.max(curVol, 0);
   volDiv.innerHTML = curVol;
@@ -154,7 +158,7 @@ if ("speechSynthesis" in window) {
 
 function testAudio() {
   var msg = new SpeechSynthesisUtterance();
-  msg.text = "Audio Test Success";
+  msg.text = "Test";
   window.speechSynthesis.speak(msg);
   //console.log(speechSynthesis.getVoices());
 }

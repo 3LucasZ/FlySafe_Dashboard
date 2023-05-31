@@ -15387,16 +15387,21 @@
                   });
                   if (!validChar)
                     return console.error("The characteristic does not exist.");
-                  //EDIT THIS FUNCTION WHICH IS FAULTY
-                  let encoder = new TextEncoder("utf-8");
-                  //var bufferToSend = Uint8Array.of(inputValue);
-                  var bufferToSend = encoder.encode(inputValue);
+                  //EDIT THIS SECTION WHICH IS FAULTY------->
+                  var bufferToSend;
+                  if (typeof inputValue === "number") {
+                    bufferToSend = Uint8Array.of(inputValue);
+                  } else {
+                    let encoder = new TextEncoder("utf-8");
+                    bufferToSend = encoder.encode(inputValue);
+                  }
                   console.log(
                     "Writing ",
                     bufferToSend,
                     " to Characteristic..."
                   );
                   return characteristic.writeValue(bufferToSend);
+                  //<-------------------
                 },
               },
               {
