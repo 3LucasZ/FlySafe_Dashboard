@@ -105,9 +105,12 @@ function gotDist(error, value) {
   console.log("dist: ", value);
   distDiv.innerHTML = value;
   updateGraphDisplay(value);
+  var msg = new SpeechSynthesisUtterance();
+  msg.text = "" + value;
+  window.speechSynthesis.speak(msg);
   setTimeout(() => {
     ble.read(volChar, gotVol);
-  }, 100);
+  }, 1000);
 }
 function gotVol(error, value) {
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
@@ -117,7 +120,7 @@ function gotVol(error, value) {
   volDiv.innerHTML = value;
   setTimeout(() => {
     ble.read(distChar, gotDist);
-  }, 100);
+  }, 1000);
 }
 function writeVol() {}
 
@@ -141,9 +144,9 @@ if ("speechSynthesis" in window) {
   alert("Sorry, your browser doesn't support text to speech!");
 }
 
-function speak() {
+function testAudio() {
   var msg = new SpeechSynthesisUtterance();
-  msg.text = "hi";
+  msg.text = "Audio Test Success";
   window.speechSynthesis.speak(msg);
-  console.log(speechSynthesis.getVoices());
+  //console.log(speechSynthesis.getVoices());
 }
