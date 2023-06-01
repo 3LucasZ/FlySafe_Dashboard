@@ -15390,7 +15390,12 @@
                   //EDIT THIS SECTION WHICH IS FAULTY------->
                   var bufferToSend;
                   if (typeof inputValue === "number") {
-                    bufferToSend = Uint8Array.of(inputValue);
+                    var tmpBuff = [];
+                    while (inputValue > 0) {
+                      tmpBuff.push(inputValue % 256);
+                      inputValue = Math.floor(inputValue / 256);
+                    }
+                    bufferToSend = Uint8Array.from(tmpBuff);
                   } else {
                     let encoder = new TextEncoder("utf-8");
                     bufferToSend = encoder.encode(inputValue);

@@ -11,6 +11,7 @@ var dists = [0];
 var cnts = [0];
 var curVol;
 var curOffset;
+var curReboot = 1;
 
 //chart
 var chart = new Chart(canvasDiv, {
@@ -86,10 +87,12 @@ let ble = new p5ble();
 function connectBLE() {
   ble.connect(serviceUuid, gotCharacteristics);
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
+  curReboot = 1;
 }
 function disconnectBLE() {
   ble.disconnect();
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
+  curReboot = 1;
 }
 
 //called once characteristics are received
@@ -127,7 +130,7 @@ function gotOffset(error, value) {
   if (error) console.log("error: ", error);
   console.log("offset: ", value);
   offsetDiv.innerHTML = value;
-  curOffset = value;
+  curOffset = Number(value);
   setTimeout(() => {
     ble.read(distChar, gotDist);
   }, 50);
@@ -140,6 +143,7 @@ function gotDist(error, value) {
   if (!ble.isConnected()) return;
   if (error) console.log("error: ", error);
   value -= curOffset;
+  value = Math.max(0, value);
   distDiv.innerHTML = value / 100;
   updateGraphDisplay(value / 100);
 
@@ -156,7 +160,7 @@ function gotDist(error, value) {
   window.speechSynthesis.speak(msg);
   setTimeout(() => {
     writeVol();
-  }, 500);
+  }, 400);
 }
 
 function writeVol() {
@@ -166,7 +170,7 @@ function writeVol() {
   console.log("Write vol: ", curVol);
   setTimeout(() => {
     writeOffset();
-  }, 500);
+  }, 400);
 }
 function writeOffset() {
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
@@ -174,8 +178,16 @@ function writeOffset() {
   ble.write(offsetChar, curOffset);
   console.log("Write offset: ", curOffset);
   setTimeout(() => {
+    writeReboot();
+  }, 400);
+}
+function writeReboot() {
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
+  if (!ble.isConnected()) return;
+  ble.write(rebootChar, curReboot);
+  setTimeout(() => {
     ble.read(distChar, gotDist);
-  }, 500);
+  }, 400);
 }
 
 //state changers
@@ -200,6 +212,11 @@ function setOffset() {
   curOffset = Math.max(curOffset, 0);
   curOffset = Math.min(curOffset, 5000);
   offsetDiv.innerHTML = curOffset;
+}
+function reboot() {
+  statusDiv.innerHTML = "Connected: " + ble.isConnected();
+  if (!ble.isConnected()) return;
+  curReboot = 2;
 }
 
 if ("speechSynthesis" in window) {
