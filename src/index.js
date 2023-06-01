@@ -196,6 +196,8 @@ function setOffset() {
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
   if (!ble.isConnected()) return;
   curOffset = Number(offsetInputDiv.value);
+  curOffset = Math.max(curOffset, 0);
+  curOffset = Math.min(curOffset, 5000);
   offsetDiv.innerHTML = curOffset;
 }
 
