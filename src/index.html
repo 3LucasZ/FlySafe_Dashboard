@@ -27,7 +27,7 @@
             Disconnect
           </button>
           <button
-            onclick="speak()"
+            onclick="reboot()"
             class="bg-yellow p-4 rounded-lg hover:scale-105 transition-all"
           >
             Reboot
@@ -40,7 +40,7 @@
 
       <div class="rounded shadow-lg bg-blue p-5">
         <div class="object-top-left font-sans">Configure:</div>
-        <div class="flex mt-2">
+        <div class="flex flex-row gap-2">
           <button
             onclick="volDown()"
             class="bg-red p-4 rounded-lg hover:scale-105 transition-all"
@@ -49,7 +49,7 @@
           </button>
           <div class="bg-yellow p-4 rounded-lg text-center mx-2">
             Volume:
-            <span id="volDiv">DNE</span>
+            <span id="volDiv">DNE</span> %
           </div>
           <button
             onclick="volUp()"
@@ -62,6 +62,25 @@
             class="bg-yellow p-4 rounded-lg hover:scale-105 transition-all"
           >
             Test
+          </button>
+        </div>
+        <div class="flex flex-row gap-2 mt-2">
+          <div class="basis-1/2 bg-yellow p-4 rounded-lg text-center">
+            Offset:
+            <span id="offsetDiv">DNE</span> cm
+          </div>
+          <input
+            type="number"
+            id="offsetInputDiv"
+            class="basis-1/4 rounded-lg p-2 w-full"
+            placeholder="e.g. 134"
+            required
+          />
+          <button
+            onclick="setOffset()"
+            class="basis-1/4 bg-yellow p-4 rounded-lg hover:scale-105 transition-all"
+          >
+            Set
           </button>
         </div>
       </div>
