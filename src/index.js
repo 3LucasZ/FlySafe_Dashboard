@@ -135,15 +135,23 @@ function gotOffset(error, value) {
 
 //looped r/w
 function gotDist(error, value) {
+  //display dist
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
   if (!ble.isConnected()) return;
   if (error) console.log("error: ", error);
-  value /= 10;
-  console.log("dist: ", value);
-  distDiv.innerHTML = value;
-  updateGraphDisplay(value);
+  value -= curOffset;
+  distDiv.innerHTML = value / 100;
+  updateGraphDisplay(value / 100);
+
+  //speak dist with 2 precision
   var msg = new SpeechSynthesisUtterance();
-  msg.text = "" + value;
+  if (value > 100) {
+    value = 10 * Math.round(value / 10);
+  }
+  if (value > 1000) {
+    value = 100 * Math.round(value / 100);
+  }
+  msg.text = "" + value / 100;
   window.speechSynthesis.speak(msg);
   setTimeout(() => {
     writeVol();
@@ -187,7 +195,7 @@ function volDown() {
 function setOffset() {
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
   if (!ble.isConnected()) return;
-  curOffset = offsetInputDiv.value;
+  curOffset = Number(offsetInputDiv.value);
   offsetDiv.innerHTML = curOffset;
 }
 
