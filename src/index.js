@@ -144,6 +144,7 @@ function gotDist(error, value) {
   updateGraphDisplay(value / 100);
 
   //speak dist with 2 precision
+  window.speechSynthesis.cancel(); // !!! clear q
   var msg = new SpeechSynthesisUtterance();
   if (value > 100) {
     value = 10 * Math.round(value / 10);
