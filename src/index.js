@@ -231,3 +231,8 @@ function testAudio() {
   window.speechSynthesis.speak(msg);
   //console.log(speechSynthesis.getVoices());
 }
+var mySound;
+mySound = new Audio("0.wav");
+function test2Audio() {
+  mySound.play();
+}
