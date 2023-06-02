@@ -142,6 +142,7 @@ function gotDist(error, value) {
   statusDiv.innerHTML = "Connected: " + ble.isConnected();
   if (!ble.isConnected()) return;
   if (error) console.log("error: ", error);
+  console.log("Recv raw dist", value);
   value -= curOffset;
   value = Math.max(0, value);
   distDiv.innerHTML = value / 100;
