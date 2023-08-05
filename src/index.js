@@ -27,6 +27,8 @@ console.log("curImperial", curImperial);
 var curReboot = 1;
 console.log("curReboot", curReboot);
 var curSpeak = 0;
+// var noSpeak = false;
+// var thresh = 3000;
 
 //init display
 volDiv.innerHTML = curVol;
