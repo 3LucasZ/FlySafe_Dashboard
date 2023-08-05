@@ -196,16 +196,20 @@ function sayDistance() {
     var msg = new SpeechSynthesisUtterance();
     msg.text = curSpeak;
     msg.volume = curVol / 100;
-    //window.speechSynthesis.cancel(); // !!! clear q
-    window.speechSynthesis.speak(msg);
-    console.log("speak now");
-    logsDiv.innerHTML = Math.random();
-
-    msg.onend = function (event) {
+    msg.onend = (event) => {
       setTimeout(() => {
         sayDistance();
       }, 100);
     };
+    msg.onerror = (event) => {
+      setTimeout(() => {
+        sayDistance();
+      }, 100);
+    };
+    //window.speechSynthesis.cancel(); // !!! clear q
+    window.speechSynthesis.speak(msg);
+    console.log("speak now");
+    logsDiv.innerHTML = Math.random();
   }
 }
 
