@@ -146,13 +146,12 @@ function gotCharacteristics(error, characteristics) {
     rebootChar = characteristics[uuids.indexOf(CHAR_REBOOT_UUID)];
     //trigger daisy chain
     ble.read(distChar, gotDist);
-    sayDistance();
   }
 }
 
 //looped r/w
 let cycleSize = 2;
-let cycleTime = 50;
+let cycleTime = 1500;
 let delay = cycleTime / cycleSize;
 console.log("delay: " + delay);
 
@@ -176,6 +175,16 @@ function gotDist(error, value) {
     if (value > 100) value = 10 * Math.round(value / 10);
     if (value > 1000) value = 100 * Math.round(value / 100);
     curSpeak = "" + value / 100;
+
+    //speak
+    var msg = new SpeechSynthesisUtterance();
+    msg.text = curSpeak;
+    msg.volume = curVol / 100;
+    window.speechSynthesis.cancel(); // !!! clear q
+    window.speechSynthesis.speak(msg);
+    // console.log("speak now");
+    // logsDiv.innerHTML = Math.random();
+
     setTimeout(() => {
       writeReboot();
     }, delay);
@@ -188,28 +197,6 @@ function writeReboot() {
     setTimeout(() => {
       ble.read(distChar, gotDist);
     }, delay);
-  }
-}
-
-function sayDistance() {
-  if (bleStatusTrigger()) {
-    var msg = new SpeechSynthesisUtterance();
-    msg.text = curSpeak;
-    msg.volume = curVol / 100;
-    msg.onend = (event) => {
-      setTimeout(() => {
-        sayDistance();
-      }, 100);
-    };
-    msg.onerror = (event) => {
-      setTimeout(() => {
-        sayDistance();
-      }, 100);
-    };
-    //window.speechSynthesis.cancel(); // !!! clear q
-    window.speechSynthesis.speak(msg);
-    console.log("speak now");
-    logsDiv.innerHTML = Math.random();
   }
 }
 
