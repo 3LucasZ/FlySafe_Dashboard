@@ -25,6 +25,7 @@ if (curImperial === null) curImperial = true;
 else curImperial = curImperial === "true";
 console.log("curImperial", curImperial);
 var curReboot = 1;
+console.log("curReboot", curReboot);
 
 //init display
 volDiv.innerHTML = curVol;
