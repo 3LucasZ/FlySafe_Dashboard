@@ -191,13 +191,13 @@ function writeReboot() {
 
 // State modifying threads
 function volUp() {
-  curVol += 5;
+  curVol += 10;
   curVol = Math.min(curVol, 100);
   volDiv.innerHTML = curVol;
   localStorage.setItem("volume", "" + curVol);
 }
 function volDown() {
-  curVol -= 5;
+  curVol -= 10;
   curVol = Math.max(curVol, 0);
   volDiv.innerHTML = curVol;
   localStorage.setItem("volume", "" + curVol);
