@@ -14,7 +14,7 @@ var dists = [0];
 var distsImperial = [0];
 var cnts = [0];
 var curVol = localStorage.getItem("volume");
-if (curVol === null) curVol = 50;
+if (curVol === null) curVol = 100;
 else curVol = parseInt(curVol);
 console.log("curVol", curVol);
 var curOffset = localStorage.getItem("offset");
