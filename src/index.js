@@ -146,7 +146,7 @@ function gotCharacteristics(error, characteristics) {
     rebootChar = characteristics[uuids.indexOf(CHAR_REBOOT_UUID)];
     //trigger daisy chain
     ble.read(distChar, gotDist);
-    talk();
+    sayDistance();
   }
 }
 
@@ -191,19 +191,19 @@ function writeReboot() {
   }
 }
 
-function talk() {
+function sayDistance() {
   if (bleStatusTrigger()) {
     var msg = new SpeechSynthesisUtterance();
     msg.text = curSpeak;
     msg.volume = curVol / 100;
-    window.speechSynthesis.cancel(); // !!! clear q
+    //window.speechSynthesis.cancel(); // !!! clear q
     window.speechSynthesis.speak(msg);
     console.log("speak now");
     logsDiv.innerHTML = Math.random();
 
     msg.onend = function (event) {
       setTimeout(() => {
-        talk();
+        sayDistance();
       }, 100);
     };
   }
