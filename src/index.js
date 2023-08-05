@@ -7,6 +7,7 @@ const volDiv = document.getElementById("volDiv");
 const offsetDiv = document.getElementById("offsetDiv");
 const offsetInputDiv = document.getElementById("offsetInputDiv");
 const imperialDiv = document.getElementById("imperialDiv");
+const logsDiv = document.getElementById("logsDiv");
 
 //running variables
 var dists = [0];
@@ -197,10 +198,13 @@ function talk() {
     msg.volume = curVol / 100;
     window.speechSynthesis.cancel(); // !!! clear q
     window.speechSynthesis.speak(msg);
+    console.log("speak now");
+    logsDiv.innerHTML = Math.random();
+
     msg.onend = function (event) {
       setTimeout(() => {
         talk();
-      }, 0);
+      }, 100);
     };
   }
 }
