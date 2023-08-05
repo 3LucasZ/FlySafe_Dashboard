@@ -26,6 +26,7 @@ else curImperial = curImperial === "true";
 console.log("curImperial", curImperial);
 var curReboot = 1;
 console.log("curReboot", curReboot);
+var curSpeak = 0;
 
 //init display
 volDiv.innerHTML = curVol;
@@ -142,18 +143,20 @@ function gotCharacteristics(error, characteristics) {
     rebootChar = characteristics[uuids.indexOf(CHAR_REBOOT_UUID)];
     //trigger daisy chain
     ble.read(distChar, gotDist);
+    talk();
   }
 }
 
 //looped r/w
 let cycleSize = 2;
-let cycleTime = 1000;
+let cycleTime = 50;
 let delay = cycleTime / cycleSize;
 console.log("delay: " + delay);
 
 function gotDist(error, value) {
   if (bleStatusTrigger()) {
     if (error) console.log("error: ", error);
+
     // gen dist
     console.log("Recv raw dist", value);
     value -= curOffset;
@@ -167,13 +170,9 @@ function gotDist(error, value) {
     distDiv.innerHTML = value / 100;
 
     //speak dist with precision: 2
-    window.speechSynthesis.cancel(); // !!! clear q
-    var msg = new SpeechSynthesisUtterance();
     if (value > 100) value = 10 * Math.round(value / 10);
     if (value > 1000) value = 100 * Math.round(value / 100);
-    msg.text = "" + value / 100;
-    msg.volume = curVol / 100;
-    window.speechSynthesis.speak(msg);
+    curSpeak = "" + value / 100;
     setTimeout(() => {
       writeReboot();
     }, delay);
@@ -189,15 +188,30 @@ function writeReboot() {
   }
 }
 
+function talk() {
+  if (bleStatusTrigger()) {
+    var msg = new SpeechSynthesisUtterance();
+    msg.text = curSpeak;
+    msg.volume = curVol / 100;
+    window.speechSynthesis.cancel(); // !!! clear q
+    window.speechSynthesis.speak(msg);
+    msg.onend = function (event) {
+      setTimeout(() => {
+        talk();
+      }, 0);
+    };
+  }
+}
+
 // State modifying threads
 function volUp() {
-  curVol += 10;
+  curVol += 20;
   curVol = Math.min(curVol, 100);
   volDiv.innerHTML = curVol;
   localStorage.setItem("volume", "" + curVol);
 }
 function volDown() {
-  curVol -= 10;
+  curVol -= 20;
   curVol = Math.max(curVol, 0);
   volDiv.innerHTML = curVol;
   localStorage.setItem("volume", "" + curVol);
