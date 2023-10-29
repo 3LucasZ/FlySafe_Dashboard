@@ -98,6 +98,25 @@
             class="basis-1/4 bg-yellow p-4 rounded-lg hover:scale-105 transition-all"
           />
         </div>
+        <div class="flex flex-row gap-2 mt-2">
+          <div class="basis-1/2 bg-yellow p-4 rounded-lg text-center">
+            Coef:
+            <span id="coefDiv">?</span>
+          </div>
+          <input
+            type="number"
+            id="coefInputDiv"
+            class="basis-1/4 rounded-lg p-2 w-full"
+            placeholder="e.g. 0.974"
+            required
+          />
+          <input
+            type="button"
+            value="Set"
+            onclick="setCoef()"
+            class="basis-1/4 bg-yellow p-4 rounded-lg hover:scale-105 transition-all"
+          />
+        </div>
       </div>
 
       <div class="rounded shadow-lg bg-blue">
