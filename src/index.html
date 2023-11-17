@@ -10,9 +10,10 @@
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
   </head>
   <body class="font-bold text-xl">
-    <div class="text-center p-5">FlySafe Dashboard 1.1 ✈️</div>
+    <div class="text-center p-5">FlySafe Dashboard 1 ✈️</div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+      <!--Top Left-->
       <div class="rounded shadow-lg bg-blue p-5">
         <div class="object-top-left font-sans">FlySafe Module:</div>
         <div class="grid grid-cols-2 gap-2">
@@ -40,7 +41,7 @@
           </div>
         </div>
       </div>
-
+      <!--Top Right-->
       <div class="rounded shadow-lg bg-blue p-5">
         <div class="object-top-left font-sans">Configure:</div>
         <div class="flex flex-row gap-2">
@@ -50,10 +51,13 @@
           >
             -
           </button>
-          <div class="bg-yellow p-4 rounded-lg text-center mx-2">
+          <button
+            class="bg-yellow p-4 rounded-lg text-center mx-2"
+            onclick="testAudio()"
+          >
             Volume:
             <span id="volDiv">?</span> %
-          </div>
+          </button>
           <button
             onclick="volUp()"
             class="bg-green p-4 rounded-lg hover:scale-105 transition-all"
@@ -118,14 +122,23 @@
           />
         </div>
       </div>
-
-      <div class="rounded shadow-lg bg-blue">
-        <div class="object-top-left p-4">AGL Altitude:</div>
-        <div class="p-5 text-7xl">
-          <span id="distDiv">?</span>
+      <!--Bottom Left-->
+      <div class="rounded shadow-lg bg-blue p-5">
+        <div>AGL Altitude:</div>
+        <div>
+          <span class="text-7xl" id="distDiv">?</span>
           <span class="text-2xl" id="distTypeDiv">feet</span>
         </div>
+        <button
+          id="downloadBtn"
+          onclick="downloadFlightData()"
+          class="bg-yellow p-4 mt-2 rounded-lg hover:scale-105 transition-all"
+        >
+          <!-- onclick is defined in js -->
+          Download
+        </button>
       </div>
+      <!--Bottom Right-->
       <div class="rounded shadow-lg" style="height: 40vh">
         <canvas id="canvasDiv"></canvas>
       </div>
@@ -133,5 +146,6 @@
     <!-- <div>DEBUG LOGS</div> -->
     <div id="logsDiv"></div>
     <script src="index.js"></script>
+    <script src="download.js"></script>
   </body>
 </html>

@@ -8,6 +8,7 @@ const offsetDiv = document.getElementById("offsetDiv");
 const offsetInputDiv = document.getElementById("offsetInputDiv");
 const imperialDiv = document.getElementById("imperialDiv");
 const logsDiv = document.getElementById("logsDiv");
+//const downloadBtn = document.getElementById("downloadBtn");
 
 //running variables
 var dists = [0];
@@ -109,12 +110,12 @@ function reGraph() {
 //set up BLE
 const SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
 const CHAR_DIST_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
-const CHAR_VOL_UUID = "66d04e60-89ba-4ab2-a0b3-2257bc8d43f7";
-const CHAR_OFFSET_UUID = "8c3b12cb-3445-4961-b9af-c49521dc9d7a";
+// const CHAR_VOL_UUID = "66d04e60-89ba-4ab2-a0b3-2257bc8d43f7";
+// const CHAR_OFFSET_UUID = "8c3b12cb-3445-4961-b9af-c49521dc9d7a";
 const CHAR_REBOOT_UUID = "0d006e04-39d4-4d90-ae33-e278cbc6dc66";
 let distChar;
-let volChar;
-let offsetChar;
+// let volChar;
+// let offsetChar;
 let rebootChar;
 let ble = new p5ble();
 
@@ -145,8 +146,8 @@ function gotCharacteristics(error, characteristics) {
       uuids[i] = characteristics[i].uuid.toLowerCase();
     }
     distChar = characteristics[uuids.indexOf(CHAR_DIST_UUID)];
-    volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
-    offsetChar = characteristics[uuids.indexOf(CHAR_OFFSET_UUID)];
+    //volChar = characteristics[uuids.indexOf(CHAR_VOL_UUID)];
+    //offsetChar = characteristics[uuids.indexOf(CHAR_OFFSET_UUID)];
     rebootChar = characteristics[uuids.indexOf(CHAR_REBOOT_UUID)];
     //trigger daisy chain
     ble.read(distChar, gotDist);
@@ -155,7 +156,7 @@ function gotCharacteristics(error, characteristics) {
 
 //looped r/w
 let cycleSize = 2;
-let cycleTime = 1500;
+let cycleTime = 1000;
 let delay = cycleTime / cycleSize;
 console.log("delay: " + delay);
 
@@ -245,14 +246,11 @@ if ("speechSynthesis" in window) {
 }
 
 // Test audio
+var mySound;
+mySound = new Audio("0.wav");
 function testAudio() {
   var msg = new SpeechSynthesisUtterance();
   msg.text = "Test";
   window.speechSynthesis.speak(msg);
-  //console.log(speechSynthesis.getVoices());
-}
-var mySound;
-mySound = new Audio("0.wav");
-function test2Audio() {
   mySound.play();
 }
