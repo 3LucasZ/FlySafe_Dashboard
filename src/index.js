@@ -36,6 +36,7 @@ else curImperial = curImperial === "true";
 console.log("curImperial", curImperial);
 var curReboot = 1;
 console.log("curReboot", curReboot);
+var lastValue = 1000;
 // var noSpeak = false;
 // var thresh = 3000;
 
@@ -182,15 +183,17 @@ function gotDist(error, value) {
     //speak depending on mode
     if (curSpeakMode == 2) {
       //periodic
-      var msg = new SpeechSynthesisUtterance();
-      msg.text = value.toPrecision(2);
-      msg.volume = curVol / 100;
-      window.speechSynthesis.cancel(); // !!! clear q
-      window.speechSynthesis.speak(msg);
+      synth(value.toPrecision(2), curVol);
     } else if (curSpeakMode == 1) {
       //pitch
     } else if (curSpeakMode == 0) {
       //threshold
+      for (let i = 0; i < events.length; i++) {
+        if (between(lastValue, events[i], value)) {
+          synth("" + events[i], curVol);
+          break;
+        }
+      }
     }
 
     setTimeout(() => {
@@ -259,8 +262,6 @@ if ("speechSynthesis" in window) {
 var mySound;
 mySound = new Audio("0.wav");
 function testAudio() {
-  var msg = new SpeechSynthesisUtterance();
-  msg.text = "Test";
-  window.speechSynthesis.speak(msg);
+  synth("Test", curVol);
   mySound.play();
 }
