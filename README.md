@@ -23,3 +23,12 @@ return characteristic.writeValue(bufferToSend);
 },
 
 !!! custom partitition scheme to fit lib + sound
+
+# Tools
+
+- Online Tone Generator: https://www.szynalski.com/tone-generator/
+- Bluefi Browser
+- P5 Ble JS
+- Platform IO
+- Tailwind CSS
+- Speech Synthesis API
