@@ -1,5 +1,8 @@
 function downloadFlightData() {
   var content = "hello world";
+  download(content);
+}
+function download(content) {
   var file = new File(["\ufeff" + content], "myFile.txt", {
     type: "text/plain:charset=UTF-8",
   });
