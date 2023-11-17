@@ -6,6 +6,7 @@ const statusDiv = document.getElementById("statusDiv");
 const volDiv = document.getElementById("volDiv");
 const offsetDiv = document.getElementById("offsetDiv");
 const offsetInputDiv = document.getElementById("offsetInputDiv");
+const speakModeDiv = document.getElementById("speakModeDiv");
 const imperialDiv = document.getElementById("imperialDiv");
 const logsDiv = document.getElementById("logsDiv");
 //const downloadBtn = document.getElementById("downloadBtn");
@@ -26,19 +27,24 @@ var curCoef = localStorage.getItem("coef");
 if (curCoef === null) curCoef = 1;
 else curCoef = parseInt(curCoef);
 console.log("curCoef", curCoef);
+var curSpeakMode = localStorage.getItem("speakMode");
+if (curSpeakMode === null) curSpeakMode = 0;
+else curSpeakMode = parseInt(curSpeakMode);
 var curImperial = localStorage.getItem("imperial");
 if (curImperial === null) curImperial = true;
 else curImperial = curImperial === "true";
 console.log("curImperial", curImperial);
 var curReboot = 1;
 console.log("curReboot", curReboot);
-var curSpeak = 0;
 // var noSpeak = false;
 // var thresh = 3000;
 
 //init display
 volDiv.innerHTML = curVol;
 offsetDiv.innerHTML = curOffset;
+if (curSpeakMode == 0) speakModeDiv.innerHTML = "Threshold";
+else if (curSpeakMode == 1) speakModeDiv.innerHTML = "Pitch";
+else speakModeDiv.innerHTML = "Periodic";
 imperialDiv.innerHTML = curImperial ? "Imperial" : "Metric";
 distTypeDiv.innerHTML = curImperial ? "feet" : "meters";
 var chart = new Chart(canvasDiv, {
@@ -163,32 +169,29 @@ console.log("delay: " + delay);
 function gotDist(error, value) {
   if (bleStatusTrigger()) {
     if (error) console.log("error: ", error);
-
-    // gen dist
+    //get raw m
     console.log("Recv raw dist", value);
     value -= curOffset;
-    value = Math.max(0, value);
-    updateGraphDisplay(value / 100);
-    if (curImperial) {
-      value *= 0.0328084; // cm to ft
-      value *= 100; // put it in "centifeet"
-      value = Math.round(value);
+    value = Math.max(0, value) / 100;
+    //upd graph
+    updateGraphDisplay(value);
+    //convert Imperial if necessary
+    if (curImperial) value = mToFt(value);
+    //upd disp
+    distDiv.innerHTML = value.toFixed(2);
+    //speak depending on mode
+    if (curSpeakMode == 2) {
+      //periodic
+      var msg = new SpeechSynthesisUtterance();
+      msg.text = value.toPrecision(2);
+      msg.volume = curVol / 100;
+      window.speechSynthesis.cancel(); // !!! clear q
+      window.speechSynthesis.speak(msg);
+    } else if (curSpeakMode == 1) {
+      //pitch
+    } else if (curSpeakMode == 0) {
+      //threshold
     }
-    distDiv.innerHTML = value / 100;
-
-    //speak dist with precision: 2
-    if (value > 100) value = 10 * Math.round(value / 10);
-    if (value > 1000) value = 100 * Math.round(value / 100);
-    curSpeak = "" + value / 100;
-
-    //speak
-    var msg = new SpeechSynthesisUtterance();
-    msg.text = curSpeak;
-    msg.volume = curVol / 100;
-    window.speechSynthesis.cancel(); // !!! clear q
-    window.speechSynthesis.speak(msg);
-    // console.log("speak now");
-    // logsDiv.innerHTML = Math.random();
 
     setTimeout(() => {
       writeReboot();
@@ -224,6 +227,13 @@ function setOffset() {
   curOffset = Math.min(curOffset, 5000);
   offsetDiv.innerHTML = curOffset;
   localStorage.setItem("offset", "" + curOffset);
+}
+function changeSpeakMode() {
+  curSpeakMode = (curSpeakMode + 1) % 3;
+  if (curSpeakMode == 0) speakModeDiv.innerHTML = "Threshold";
+  else if (curSpeakMode == 1) speakModeDiv.innerHTML = "Pitch";
+  else speakModeDiv.innerHTML = "Periodic";
+  localStorage.setItem("speakMode", "" + curSpeakMode);
 }
 function toggleImperial() {
   curImperial = !curImperial;
