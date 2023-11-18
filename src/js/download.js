@@ -13,6 +13,7 @@ function download(content) {
 
   //a.style = "display: none";
   secretDiv.href = url;
+  logsDiv.innerHTML = url + "HEY THERE" + content;
   //secretDiv.download = file.name;
   //a.click();
   //window.URL.revokeObjectURL(url);
