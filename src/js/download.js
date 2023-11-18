@@ -1,7 +1,6 @@
 function downloadFlightData() {
   var content = "hello world";
   download(content);
-  logsDiv.innerHTML = "" + rng(10000);
 }
 function download(content) {
   var file = new File(["\ufeff" + content], "myFile.txt", {
