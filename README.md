@@ -36,3 +36,14 @@ return characteristic.writeValue(bufferToSend);
 - Local session storage
 - - Limit: 5MB and only strings, which is about 5x10^6 characters.
 - - Save on window close: unreliable, so j do it every 10 seconds?
+
+# Choices
+
+- Synth >> wav
+- Plain HTML >> react
+- BLE >> Wifi
+- Local storage >> runtime storage
+
+# Misc
+
+- How to do BLE Periphery Simulation?
