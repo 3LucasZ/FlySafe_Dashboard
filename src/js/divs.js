@@ -10,3 +10,4 @@ const speakModeDiv = document.getElementById("speakModeDiv");
 const imperialDiv = document.getElementById("imperialDiv");
 const logsDiv = document.getElementById("logsDiv");
 //const downloadBtn = document.getElementById("downloadBtn");
+const secretDiv = document.getElementById("secretDiv");

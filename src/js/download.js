@@ -8,10 +8,12 @@ function download(content) {
     type: "text/plain:charset=UTF-8",
   });
   url = window.URL.createObjectURL(file);
-  var a = document.createElement("a");
-  a.style = "display: none";
-  a.href = url;
-  a.download = file.name;
-  a.click();
-  window.URL.revokeObjectURL(url);
+  console.log(file);
+  console.log(url);
+
+  //a.style = "display: none";
+  secretDiv.href = url;
+  secretDiv.download = file.name;
+  //a.click();
+  //window.URL.revokeObjectURL(url);
 }
