@@ -18,3 +18,7 @@ function synth(str, vol) {
   window.speechSynthesis.cancel(); // !!! clear q
   window.speechSynthesis.speak(msg);
 }
+
+function rng(mx) {
+  return Math.floor(Math.random() * mx);
+}
