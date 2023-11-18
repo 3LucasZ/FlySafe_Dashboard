@@ -13,7 +13,7 @@ function download(content) {
 
   //a.style = "display: none";
   secretDiv.href = url;
-  secretDiv.download = file.name;
+  //secretDiv.download = file.name;
   //a.click();
   //window.URL.revokeObjectURL(url);
 }
