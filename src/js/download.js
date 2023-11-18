@@ -17,3 +17,7 @@ function download(content) {
   //a.click();
   //window.URL.revokeObjectURL(url);
 }
+function abc() {
+  var newWindow = window.open();
+  newWindow.document.write("ohai");
+}
