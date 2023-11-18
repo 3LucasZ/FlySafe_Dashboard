@@ -28,6 +28,7 @@ return characteristic.writeValue(bufferToSend);
 
 - Online Tone Generator: https://www.szynalski.com/tone-generator/
 - - https://marcgg.com/blog/2016/11/01/javascript-audio/
+- File generator: https://testfiledownload.com/
 - Bluefi Browser
 - P5 Ble JS
 - Platform IO
